@@ -13,6 +13,21 @@ export default new Router({
       name: 'home',
       component: Home
     },
+    {
+      path: '/brand',
+      name: 'brand',
+      component: () => import(/* webpackChunkName: "brand" */ './views/brand.vue')
+    },
+    {
+      path: '/carSeries',
+      name: 'carSeries',
+      component: () => import(/* webpackChunkName: "carSeries" */ './views/carSeries.vue')
+    },
+    {
+      path: '/carModel',
+      name: 'carModel',
+      component: () => import(/* webpackChunkName: "carModel" */ './views/carModel.vue')
+    },
     // {
     //   path: '/about',
     //   name: 'about',
