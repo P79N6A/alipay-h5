@@ -28,13 +28,13 @@ export default new Router({
       name: 'carModel',
       component: () => import(/* webpackChunkName: "carModel" */ './views/carModel.vue')
     },
-    // {
-    //   path: '/about',
-    //   name: 'about',
-    //   // route level code-splitting
-    //   // this generates a separate chunk (about.[hash].js) for this route
-    //   // which is lazy-loaded when the route is visited.
-    //   component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
-    // }
+    {
+      path: '/evaluationAgreement',
+      name: 'evaluationAgreement',
+      // route level code-splitting
+      // this generates a separate chunk (about.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import(/* webpackChunkName: "about" */ './views/evaluationAgreement.vue')
+    }
   ]
 })

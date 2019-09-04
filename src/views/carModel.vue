@@ -1,50 +1,91 @@
 <template>
-  <cubePage title="选择车型" type="drawer">
-    <div slot="content">
-      <div class="view-wrapper">
-        <div class="index-list-wrapper">
-          <cube-index-list
-            :data="cityData"
-            @select="selectItem"
-          ></cube-index-list>
+    <cubePage title="选择车型" type="drawer">
+        <div slot="content">
+            <div class="view-wrapper">
+                <div class="index-list-wrapper">
+                    <cube-index-list
+                            :navbar="false"
+                            :data="modelList"
+                            @select="selectItem"
+                    ></cube-index-list>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </cubePage>
+    </cubePage>
 </template>
 
 <script>
-import cubePage from "@/components/cube-page";
-import cityData from '@/common/listJson.json'
+  import cubePage from "@/components/cube-page";
+  import { getCardModel } from '@/api/index'
 
-export default {
-  components: {
-    cubePage
-  },
-   data() {
+  export default {
+    components: {
+      cubePage
+    },
+    computed: {
+      model() {
+        return this.$store.state.model
+      }
+    },
+    data () {
       return {
-        cityData: cityData
+        modelList: []
       }
     },
     methods: {
-      selectItem(item) {
-        console.log(item.name)
+      selectItem (item) {
+        this.model.vehicleModel = item.name
+        // this.$store.dispatch('setModelName', item.name)
         this.$router.push('/')
+      },
+      async get (carSeriesId) {
+        if (!carSeriesId)
+          return
+        try {
+          const params = {
+            param: {serialId: carSeriesId}
+          }
+          const {data} = await getCardModel(params);
+          this.init(data)
+        } catch (e) {
+          console.log(e)
+        }
+      },
+      init (data) {
+        if (data && data.list) {
+          const arr = data.list.map(item => {
+            return {
+              name: item.carName,
+              ...item
+            }
+          })
+          this.modelList = [
+            {
+              name: '在售车型',
+              items: arr
+            }
+          ]
+        }
+
       }
+    },
+    mounted () {
+      this.get(this.$route.query.carSeriesId)
     }
-};
+  };
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-  .view-wrapper
-    position: fixed
-    top: 54px
-    left: 0
-    bottom: 0
-    width: 100%
-    .index-list-wrapper
-      height: 98%
-      width: 94%
-      margin: 0 auto
-      overflow: hidden
+    .view-wrapper
+        position: fixed
+        top: 54px
+        left: 0
+        bottom: 0
+        width: 100%
+
+        .index-list-wrapper
+            height: 98%
+            width: 94%
+            margin: 0 auto
+            overflow: hidden
 </style>
