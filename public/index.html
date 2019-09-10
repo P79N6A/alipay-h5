@@ -2,23 +2,40 @@
 <html lang="en">
 
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <!-- <meta name="viewport" content="width=device-width,initial-scale=1.0"> -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-  <link rel="icon" href="<%= BASE_URL %>favicon.ico">
-  <title>alipay-h5</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- <meta name="viewport" content="width=device-width,initial-scale=1.0"> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+    <title>alipay-h5</title>
 </head>
 
 <body>
-  <noscript>
+<noscript>
     <strong>We're sorry but alipay-h5 doesn't work properly without JavaScript enabled. Please enable it to
-      continue.</strong>
-  </noscript>
-  <div id="app"></div>
-  <!-- built files will be auto injected -->
+        continue.</strong>
+</noscript>
+<div id="app"></div>
+<!-- built files will be auto injected -->
 </body>
+<script src="https://gw.alipayobjects.com/as/g/h5-lib/alipayjsapi/3.1.1/alipayjsapi.min.js"></script>
 <script>
+
+  // function ready(callback) {
+  //   // 如果jsbridge已经注入则直接调用
+  //   if (window.AlipayJSBridge) {
+  //     callback && callback();
+  //   } else {
+  //     // 如果没有注入则监听注入的事件
+  //     document.addEventListener('AlipayJSBridgeReady', callback, false);
+  //   }
+  //   console.log(AlipayJSBridge)
+  // }
+  // ready(function () {
+  //   AlipayJSBridge.call('toast', {
+  //     content: 'hello'
+  //   });
+  // });
   // var documentElement = document.documentElement;
   // function callback() {
   //     var clientWidth = documentElement.clientWidth;
@@ -63,16 +80,16 @@
   //     event.preventDefault();
   //   }
   // }, false);
-  window.onload = function() {
-  document.addEventListener('touchstart', function(event) {
-    if (event.touches.length > 1) {
-      event.preventDefault()
-    }
-  })
-  document.addEventListener('gesturestart', function(event) {
-    event.preventDefault()
-  })
-}
+  window.onload = function () {
+    document.addEventListener('touchstart', function (event) {
+      if (event.touches.length > 1) {
+        event.preventDefault()
+      }
+    })
+    document.addEventListener('gesturestart', function (event) {
+      event.preventDefault()
+    })
+  }
 </script>
 
 </html>

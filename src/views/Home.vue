@@ -96,6 +96,8 @@
       openProtocol() {
         this.$router.push('/evaluationAgreement')
       }
+    },
+    mounted () {
     }
   };
 </script>
