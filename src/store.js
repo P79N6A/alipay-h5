@@ -14,7 +14,12 @@ export default new Vuex.Store({
     },
     authData: {
       authCode: '',
-      state: ''
+      state: '',
+      token: ''
+    },
+    user: {
+      customerId: '',
+      aliPayUserId: ''
     }
   },
   mutations: {

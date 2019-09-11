@@ -1,30 +1,61 @@
 <template>
     <div id="app" class="wrapper">
+        <cube-popup class="cube-extend-popup" :mask="false" type="my-popup" ref="myPopup">
+            {{errorMessage}}
+        </cube-popup>
         <cube-view></cube-view>
     </div>
 </template>
 
 <script type="text/ecmascript-6">
   import CubeView from './components/cube-view.vue'
-  import { authorization } from '@/api'
+  import { authorization, getUserInfo } from '@/api'
   import { getQueryString, ready } from '@/utils'
 
   export default {
     data () {
-      return {}
+      return {
+        errorMessage: ''
+      }
     },
     computed: {
       authData () {
         return this.$store.state.authData
+      },
+      user () {
+        return this.$store.state.user
+      },
+      model () {
+        return this.$store.state.model
       }
     },
     components: {
       CubeView
     },
     methods: {
+      showPopup (refId, e = '请求错误') {
+        this.errorMessage = e
+        const component = this.$refs[refId]
+        component.show()
+        setTimeout(() => {
+          component.hide()
+        }, 2000)
+      },
+      async getUserInfo () {
+        try {
+          const {data} = await getUserInfo({
+            id: this.user.customerId
+          })
+          this.model.name = data.customerName
+          this.model.idCard = data.certificateNum
+          this.model.phoneNumber = data.createdStamp
+        } catch (e) {
+          this.showPopup('myPopup', e && e.msg || undefined)
+        }
+      },
       async authorization () {
         try {
-          location.replace(`https://openauth.alipay.com/oauth2/publicAppAuthorize.htm?app_id=2019082366406532&scope=auth_user&state=customer_123&redirect_uri=${encodeURI(window.location.href)}`)
+          location.replace(`https://openauth.alipay.com/oauth2/publicAppAuthorize.htm?app_id=2019082366406532&scope=auth_user&state=${this.user.customerId}&redirect_uri=${encodeURI(window.location.href)}`)
           this.authData.authCode = getQueryString('auth_code')
           this.authData.state = getQueryString('state')
           if (this.authData.authCode && this.authData.state) {
@@ -33,21 +64,17 @@
               state: this.authData.state
             }
             const {data} = await authorization(params)
-            ready(function () {
-              AlipayJSBridge.call('toast', {
-                content: JSON.stringify(data)
-              });
-            })
+            this.user.aliPayUserId = data.data.aliPayUserId
           }
-        }catch (e) {
-          ready(function () {
-              AlipayJSBridge.call('toast', {
-                content: e
-              });
-          })
+        } catch (e) {
+          this.showPopup('myPopup', e && e.msg || undefined)
         }
       },
       init () {
+        this.user.customerId = getQueryString('customerId') || '170828129252'
+        this.user.token = getQueryString('token') || 'B6330F4CF1644666B3720261D45CF8E5'
+        localStorage.setItem('token', this.user.token)
+        this.getUserInfo()
         // 判断微信还是支付宝
         if (/MicroMessenger/.test(window.navigator.userAgent)) {
           // 微信
@@ -171,4 +198,11 @@
             width: 94%
             margin: 0 auto
             overflow: hidden
+
+    .cube-extend-popup .cube-popup-content {
+        padding: 20px;
+        color: #fff;
+        font-size 16px;
+        background-color: rgba(0, 0, 0, .8);
+    }
 </style>

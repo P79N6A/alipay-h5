@@ -2,7 +2,8 @@ import axios from 'axios';
 
 class AjaxRequest {
   constructor() {
-    this.baseURL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : '/';
+    // this.baseURL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : '/';
+    // this.baseURL = '/';
     this.timeout = 2000;
   }
 
@@ -13,7 +14,7 @@ class AjaxRequest {
     });
     // 设置拦截器
     instance.interceptors.request.use((config) => {
-      config.headers.Authorization = localStorage.getItem('token');
+      config.headers.token = localStorage.getItem('token');
       return config;
     }, err => Promise.reject(err));
     // 设置响应拦截器

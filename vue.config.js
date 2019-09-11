@@ -50,5 +50,10 @@ module.exports = {
   devServer: {
     disableHostCheck: true,
     port: 80,
+    proxy: {
+      '/customer': {
+        target: 'http://222.212.141.34:8085'
+      }
+    }
   }
 }

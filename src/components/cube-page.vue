@@ -45,7 +45,7 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-    $header-height = 0
+    $header-height = 0px
     .cube-page
         position: absolute
         z-index: 10
