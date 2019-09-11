@@ -36,7 +36,7 @@
       selectItem (item) {
         this.model.vehicleModel = item.name
         // this.$store.dispatch('setModelName', item.name)
-        this.$router.push('/')
+        this.$router.push({name: 'name'})
       },
       async get (carSeriesId) {
         if (!carSeriesId)

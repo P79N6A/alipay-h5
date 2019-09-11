@@ -3,14 +3,20 @@ import Router from 'vue-router'
 import Home from './views/Home.vue'
 
 Vue.use(Router)
+// console.log(process.env.NODE_ENV === 'production' ? '/ws_html/' : '/')
 
 export default new Router({
   mode: 'history',
+  // base: 'ws_html',
   // base: process.env.BASE_URL,
   base: process.env.NODE_ENV === 'production' ? '/ws_html/' : '/',
   routes: [
     {
       path: '/',
+      redirect: '/home'
+    },
+    {
+      path: '/home',
       name: 'home',
       component: Home,
       meta:{
