@@ -10,10 +10,11 @@
 
 <script>
   import cubePage from "@/components/cube-page";
-
   export default {
     components: {
       cubePage
+    },
+    mounted () {
     }
   };
 </script>

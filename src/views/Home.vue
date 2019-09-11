@@ -1,27 +1,28 @@
 <template>
-    <div>
-        <header class="cube-bar">
-            <h1>申请评估</h1>
-        </header>
-        <section class="cube-content" ref="mfct">
-            <cube-form :model="model" @validate="validateHandler" ref="formData" class="cube-form_groups">
-                <cube-form-group>
-                    <cube-form-item v-for="(item, index) in fields" :key="index" :field="item"></cube-form-item>
-                    <model :model="model" :invalid="invalid"></model>
-                    <cube-checkbox v-model="model.agree">
-                        本人已阅读并同意<span class="link-blue" @click.stop="openProtocol">申请评估协议</span>
-                    </cube-checkbox>
-                </cube-form-group>
-                <cube-form-group>
-                    <cube-button @click="submitHandler" :disabled="!model.agree">提交申请</cube-button>
-                </cube-form-group>
-            </cube-form>
-        </section>
-    </div>
+    <!--    <div>-->
+    <!--        <header class="cube-bar">-->
+    <!--            <h1>申请评估</h1>-->
+    <!--        </header>-->
+    <section class="cube-content" ref="mfct">
+        <cube-form :model="model" @validate="validateHandler" ref="formData" class="cube-form_groups">
+            <cube-form-group>
+                <cube-form-item v-for="(item, index) in fields" :key="index" :field="item"></cube-form-item>
+                <model :model="model" :invalid="invalid"></model>
+                <cube-checkbox v-model="model.agree">
+                    本人已阅读并同意<span class="link-blue" @click.stop="openProtocol">申请评估协议</span>
+                </cube-checkbox>
+            </cube-form-group>
+            <cube-form-group>
+                <cube-button @click="submitHandler" :disabled="!model.agree">提交申请</cube-button>
+            </cube-form-group>
+        </cube-form>
+    </section>
+    <!--    </div>-->
 </template>
 
 <script>
   import model from './model'
+  import { getQueryString, ready } from '@/utils'
 
   export default {
     name: "home",
@@ -93,11 +94,9 @@
         this.validity = result.validity;
         this.valid = result.valid;
       },
-      openProtocol() {
+      openProtocol () {
         this.$router.push('/evaluationAgreement')
       }
-    },
-    mounted () {
     }
   };
 </script>
@@ -131,6 +130,7 @@
         }
 
     }
+
     .cube-checkbox-label {
         position absolute
         left 20px;

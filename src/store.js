@@ -11,16 +11,20 @@ export default new Vuex.Store({
       phoneNumber: "",
       vehicleModel: "",
       agree: false
+    },
+    authData: {
+      authCode: '',
+      state: ''
     }
   },
   mutations: {
-    SET_MODEL_NAME (state, modelName) {
-      state.modelName = modelName
-    }
+    // SET_AUTH_CODE (state, authCode) {
+    //   state.authCode = authCode
+    // }
   },
   actions: {
-    setModelName ({commit}, modleName) {
-      commit('SET_MODEL_NAME', modleName)
-    }
+    // setAuthCode ({commit}, authCode) {
+    //   commit('SET_AUTH_CODE', authCode)
+    // }
   }
 })
