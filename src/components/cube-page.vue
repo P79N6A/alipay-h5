@@ -45,7 +45,6 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-    $header-height = 0px
     .cube-page
         position: absolute
         z-index: 10
@@ -57,8 +56,8 @@
 
         .header
             position: relative
-            height: $header-height
-            line-height: $header-height
+            height: 0px
+            line-height: 0px
             text-align: center
             background-color: #edf0f4
             box-shadow: 0 1px 6px #ccc
@@ -78,7 +77,7 @@
                 color: #fc9153
 
         > .wrapper
-            height: calc(100% - $header-height)
+            height: calc(100% - 0px)
             overflow-x: hidden
             overflow-y: auto
             // -webkit-overflow-scrolling: touch
