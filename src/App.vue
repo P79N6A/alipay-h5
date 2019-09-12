@@ -47,7 +47,7 @@
           this.model.phoneNumber = data.createdStamp
         } catch (e) {
           console.log(e, 'getUserInfo')
-          // this.showPopup(e)
+          this.showPopup(e)
         }
       },
       async authorization () {
@@ -70,12 +70,13 @@
           this.getUserInfo()
         } catch (e) {
           console.log(e, 'authorization')
-          // this.showPopup(e)
+          this.showPopup(e)
         }
       },
       init () {
         this.user.customerId = getQueryString('customerId') || '170828129252'
         this.user.token = getQueryString('token') || 'CFDE472E32C543F29B4CBFFB7ACD9E05'
+        this.user.alipayVersion  = Ali.alipayVersion
         localStorage.setItem('token', this.user.token)
         // 判断微信还是支付宝
         if (/MicroMessenger/.test(window.navigator.userAgent)) {
@@ -92,12 +93,6 @@
     },
     mounted () {
       this.init()
-      const toast = this.$createToast({
-        txt: Ali.alipayVersion,
-        type: 'warn',
-        time: 2000,
-      })
-      toast.show()
     }
   }
 </script>
