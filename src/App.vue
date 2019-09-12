@@ -50,7 +50,7 @@
           this.model.idCard = data.certificateNum
           this.model.phoneNumber = data.createdStamp
         } catch (e) {
-          this.showPopup('myPopup', e && e.msg || undefined)
+          this.showPopup('myPopup', JSON.stringify(e))
         }
       },
       async authorization () {
@@ -70,7 +70,7 @@
           }
           this.getUserInfo()
         } catch (e) {
-          this.showPopup('myPopup', e && e.msg || undefined)
+          this.showPopup('myPopup', JSON.stringify(e))
         }
       },
       init () {
