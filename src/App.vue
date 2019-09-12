@@ -58,6 +58,7 @@
           this.authData.authCode = getQueryString('auth_code')
           this.authData.state = getQueryString('state')
           if (!this.authData.authCode && this.payEnv === 'alipay') {
+            //window.location.href 'http://222.212.141.34:8085/ws_html/home'
             location.replace(`https://openauth.alipay.com/oauth2/publicAppAuthorize.htm?app_id=2019082366406532&scope=auth_user&state=${this.user.customerId}&redirect_uri=${encodeURI(window.location.href)}`)
             return
           }
