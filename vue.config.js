@@ -30,6 +30,7 @@ module.exports = {
     ],
     externals: {
       'ap': 'ap', // 配置使用CDN
+      'Ali': 'Ali', // 配置使用CDN
     }
   },
 

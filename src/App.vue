@@ -92,8 +92,12 @@
     },
     mounted () {
       this.init()
-
-
+      const toast = this.$createToast({
+        txt: Ali.alipayVersion,
+        type: 'warn',
+        time: 2000,
+      })
+      toast.show()
     }
   }
 </script>
