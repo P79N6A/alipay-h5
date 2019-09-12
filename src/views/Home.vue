@@ -8,8 +8,8 @@
             <cube-form-group>
                 <cube-form-item v-for="(item, index) in fields" :key="index" :field="item"></cube-form-item>
                 <model :model="model" :invalid="invalid"></model>
-                <cube-checkbox v-model="model.agree">
-                    本人已阅读并同意<span class="link-blue" @click.stop="openProtocol">申请评估协议</span>
+                <cube-checkbox v-model="model.agree" class="protocol-checkbox">
+                    本人已阅读并同意 <span class="link-blue" @click.stop="openProtocol">服务协议</span>、<span class="link-blue" @click.stop="openProtocol">汽车分期业务综合授信(担保)协议</span>
                 </cube-checkbox>
             </cube-form-group>
             <cube-form-group>
@@ -87,7 +87,17 @@
         this.model.vehicleModel ? this.invalid = false : this.invalid = true
         this.$refs.formData.validate();
         if (this.valid && this.model.vehicleModel) {
-          console.log("submit");
+          ready(function () {
+            AlipayJSBridge.call('verifyIdentity', {verifyId: 'xxx', isNeedFP: 'true',}, function (result) {
+
+              // AlipayJSBridge.call('toast', {
+              //   content: result.code
+              // });
+              // AlipayJSBridge.call('toast', {
+              //   content: result.verifyId
+              // });
+            });
+          });
         }
       },
       validateHandler (result) {
@@ -137,4 +147,7 @@
         z-index 2
     }
 
+    .protocol-checkbox {
+        height 60px;
+    }
 </style>

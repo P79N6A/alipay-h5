@@ -1,8 +1,5 @@
 <template>
     <div id="app" class="wrapper">
-        <cube-popup class="cube-extend-popup" :mask="false" type="my-popup" ref="myPopup">
-            {{errorMessage}}
-        </cube-popup>
         <cube-view></cube-view>
     </div>
 </template>
@@ -15,7 +12,6 @@
   export default {
     data () {
       return {
-        errorMessage: ''
       }
     },
     computed: {
@@ -33,13 +29,13 @@
       CubeView
     },
     methods: {
-      showPopup (refId, e = '请求错误') {
-        this.errorMessage = e
-        const component = this.$refs[refId]
-        component.show()
-        setTimeout(() => {
-          component.hide()
-        }, 2000)
+      showPopup (e = '请求错误') {
+        const toast = this.$createToast({
+          txt: e,
+          type: 'warn',
+          time: 2000,
+        })
+        toast.show()
       },
       async getUserInfo () {
         try {
@@ -51,8 +47,7 @@
           this.model.phoneNumber = data.createdStamp
         } catch (e) {
           console.log(e, 'getUserInfo')
-          this.showPopup('myPopup', e)
-          // this.showPopup('myPopup', JSON.stringify(e))
+          this.showPopup(e)
         }
       },
       async authorization () {
@@ -75,7 +70,7 @@
           this.getUserInfo()
         } catch (e) {
           console.log(e, 'authorization')
-          this.showPopup('myPopup', e)
+          this.showPopup(e)
         }
       },
       init () {
@@ -97,16 +92,7 @@
     },
     mounted () {
       this.init()
-      ready(function () {
-        // AlipayJSBridge.call('verifyIdentity', {verifyId: 'xxx', isNeedFP: 'true',}, function (result) {
-        //   AlipayJSBridge.call('toast', {
-        //     content: result.code
-        //   });
-        //   // AlipayJSBridge.call('toast', {
-        //   //   content: result.verifyId
-        //   // });
-        // });
-      });
+
 
     }
   }
