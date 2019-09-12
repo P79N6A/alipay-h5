@@ -55,7 +55,9 @@
       },
       async authorization () {
         try {
-          location.replace(`https://openauth.alipay.com/oauth2/publicAppAuthorize.htm?app_id=2019082366406532&scope=auth_user&state=${this.user.customerId}&redirect_uri=${encodeURI(window.location.href)}`)
+          if(!this.user.aliPayUserId) {
+            location.replace(`https://openauth.alipay.com/oauth2/publicAppAuthorize.htm?app_id=2019082366406532&scope=auth_user&state=${this.user.customerId}&redirect_uri=${encodeURI(window.location.href)}`)
+          }
           this.authData.authCode = getQueryString('auth_code')
           this.authData.state = getQueryString('state')
           if (this.authData.authCode && this.authData.state) {
