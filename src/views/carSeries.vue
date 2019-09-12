@@ -17,6 +17,7 @@
 <script>
   import cubePage from "@/components/cube-page";
   import { getCarSeries } from '@/api/index'
+  import _ from 'lodash'
 
   export default {
     components: {
@@ -29,7 +30,6 @@
     },
     methods: {
       selectItem (item) {
-        console.log(item.name)
         this.$router.push({name: 'carModel', query: {carSeriesId: item.id}})
       },
       async get (brandId) {
@@ -37,26 +37,32 @@
           return
         try {
           const params = {
-            type: 7,
-            pid: brandId,
-            rt: 'serial'
+            // type: 7,
+            masterid: brandId,
+            // rt: 'serial'
           }
-          let data = await getCarSeries(params)
+          let {data} = await getCarSeries(params)
           this.init(data)
         } catch (e) {
           console.log(e)
         }
       },
       init (data) {
-        data = data.replace(/(?:\s*['"]*)?([a-zA-Z0-9]+)(?:['"]*\s*)?:/g, "'$1':");
-        data = eval('(' + data + ')');
-        this.carSeries = data.map(item => {
+        // data = data.replace(/(?:\s*['"]*)?([a-zA-Z0-9]+)(?:['"]*\s*)?:/g, "'$1':");
+        // data = eval('(' + data + ')');
+        this.carSeries = _.chain(data).groupBy(item => item.brandName).map((values, key)=>{
+          const valueBean = values.map(item => {
+            return {
+              name: item.seriesName,
+              value: item.id,
+              ...item
+            }
+          })
           return {
-            name: item.gname,
-            items: item.child
+            name: key,
+            items: valueBean
           }
-        })
-        console.log(this.carSeries)
+        }).value()
       }
     },
     mounted () {

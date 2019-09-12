@@ -2,7 +2,9 @@
     <cubePage title="申请评估协议" type="drawer">
         <div slot="content">
             <div class="view-wrapper">
-                评估协议评估协议评估协议评估协议评估协议评估协议评估协议评估协议评估协议评估协议评估协议评估协议评估协议评估协议评估协议评估协议评估协议评估协议评估协议评估协议评估协议
+                <p class="protocol">
+                    评估协议评估协议评估协议评估协议评估协议评估协议评估协议评估协议评估协议评估协议评估协议评估协议评估协议评估协议评估协议评估协议评估协议评估协议评估协议评估协议评估协议
+                </p>
             </div>
         </div>
     </cubePage>
@@ -18,4 +20,10 @@
     }
   };
 </script>
+
+<style lang="stylus">
+    .protocol {
+        font-size 20px;
+    }
+</style>
 

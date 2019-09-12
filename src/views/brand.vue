@@ -36,33 +36,35 @@
       async get () {
         try {
           const params = {
-            type: 7,
-            pid: 0,
-            rt: 'master'
+            // type: 7,
+            // pid: 0,
+            // rt: 'master'
           }
-          let data = await getBrand(params)
+          let {data} = await getBrand(params)
           this.init(data)
         } catch (e) {
           console.log(e)
         }
       },
       init (data) {
-        data = data.replace(/(?:\s*['"]*)?([a-zA-Z0-9]+)(?:['"]*\s*)?:/g, "'$1':");
-        data = eval('('+ data + ')');
-        this.brandData = _.chain(data.DataList).groupBy(item => {
-          return item.tSpell
-        }).map((values, key) => ({name: key, items: values})).value()
-        // console.log(this.brandData)
+        // data = data.replace(/(?:\s*['"]*)?([a-zA-Z0-9]+)(?:['"]*\s*)?:/g, "'$1':");
+        // data = eval('('+ data + ')');
+        this.brandData = _.chain(data).groupBy(item => {
+          return item.alphabetCode
+        }).map((values, key) => {
+          const valueBean = values.map(item => {
+            return {
+              name: item.brandName,
+              value: item.id,
+              ...item
+            }
+          })
+          return {name: key, items: valueBean}
+        }).value()
       }
     },
     mounted () {
       this.get()
-      ready(() => {
-        AlipayJSBridge.call('toast', {
-          content: '33123'
-        });
-      })
-
     }
   }
   ;

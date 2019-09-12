@@ -57,24 +57,26 @@
         try {
           this.authData.authCode = getQueryString('auth_code')
           this.authData.state = getQueryString('state')
-          if (!this.authData.authCode) {
+          if (!this.authData.authCode && this.payEnv === 'alipay') {
             location.replace(`https://openauth.alipay.com/oauth2/publicAppAuthorize.htm?app_id=2019082366406532&scope=auth_user&state=${this.user.customerId}&redirect_uri=${encodeURI(window.location.href)}`)
           }
-          const params = {
-            auth_code: this.authData.authCode,
-            state: this.authData.state
+          this.getUserInfo()
+          if(this.authData.authCode && this.authData.state) {
+            const params = {
+              auth_code: this.authData.authCode,
+              state: this.authData.state
+            }
+            const {data} = await authorization(params)
+            this.user.aliPayUserId = data.data.aliPayUserId
           }
-          const {data} = await authorization(params)
-          this.user.aliPayUserId = data.data.aliPayUserId
         } catch (e) {
           this.showPopup('myPopup', e && e.msg || undefined)
         }
       },
       init () {
         this.user.customerId = getQueryString('customerId') || '170828129252'
-        this.user.token = getQueryString('token') || 'B6330F4CF1644666B3720261D45CF8E5'
+        this.user.token = getQueryString('token') || 'CFDE472E32C543F29B4CBFFB7ACD9E05'
         localStorage.setItem('token', this.user.token)
-        this.getUserInfo()
         // 判断微信还是支付宝
         if (/MicroMessenger/.test(window.navigator.userAgent)) {
           // 微信
@@ -82,10 +84,10 @@
         } else if (/AlipayClient/.test(window.navigator.userAgent)) {
           // 支付宝
           this.payEnv = 'alipay';
-          this.authorization()
         } else {
           this.payEnv = 'others';
         }
+        this.authorization()
       }
     },
     mounted () {

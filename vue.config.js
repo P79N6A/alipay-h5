@@ -58,12 +58,15 @@ module.exports = {
       '/customer': {
         target: 'http://222.212.141.34:8085'
       },
-      '/CarInfo': {
-        target: 'http://api.car.bitauto.com'
+      '/product': {
+        target: 'http://222.212.141.34:8085'
       },
-      '/web_app': {
-        target: 'http://mapi.yiche.com'
-      }
+      // '/CarInfo': {
+      //   target: 'http://api.car.bitauto.com'
+      // },
+      // '/web_app': {
+      //   target: 'http://mapi.yiche.com'
+      // }
     }
   }
 }

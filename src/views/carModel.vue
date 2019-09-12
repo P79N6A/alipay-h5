@@ -23,7 +23,7 @@
       cubePage
     },
     computed: {
-      model() {
+      model () {
         return this.$store.state.model
       }
     },
@@ -36,38 +36,52 @@
       selectItem (item) {
         this.model.vehicleModel = item.name
         // this.$store.dispatch('setModelName', item.name)
-        this.$router.push({name: 'name'})
+        this.$router.push({name: 'home'})
       },
       async get (carSeriesId) {
         if (!carSeriesId)
           return
         try {
           const params = {
-            param: {serialId: carSeriesId}
+            serialId: carSeriesId
           }
           const {data} = await getCardModel(params);
           this.init(data)
+
         } catch (e) {
           console.log(e)
         }
       },
       init (data) {
-        if (data && data.list) {
-          const arr = data.list.map(item => {
-            return {
-              name: item.carName,
-              ...item
-            }
-          })
-          this.modelList = [
-            {
-              name: '在售车型',
-              items: arr
-            }
-          ]
-        }
-
-      }
+        console.log(data)
+        const arr = data.map(item => {
+          return {
+            ...item,
+            name: item.fullname
+          }
+        })
+        console.log(arr)
+        this.modelList = [{
+          name: '所有车型',
+          items: arr
+        }]
+        // console.log(this.modelList)
+        //   if (data && data.list) {
+        //     const arr = data.list.map(item => {
+        //       return {
+        //         name: item.carName,
+        //         ...item
+        //       }
+        //     })
+        //     this.modelList = [
+        //       {
+        //         name: '在售车型',
+        //         items: arr
+        //       }
+        //     ]
+        //   }
+        // }
+      },
     },
     mounted () {
       this.get(this.$route.query.carSeriesId)
