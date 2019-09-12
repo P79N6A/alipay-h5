@@ -24,7 +24,7 @@ export const getCardModel = params => axios.request({
 // 授权
 export const authorization = params => axios.request({
   method: 'get',
-  url: 'http://013a1500.ngrok.io/order/ws/authback',
+  url: '/order/ws/authback',
   params
 })
 
