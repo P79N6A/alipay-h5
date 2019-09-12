@@ -47,7 +47,7 @@
           this.model.phoneNumber = data.createdStamp
         } catch (e) {
           console.log(e, 'getUserInfo')
-          this.showPopup(e)
+          // this.showPopup(e)
         }
       },
       async authorization () {
@@ -70,7 +70,7 @@
           this.getUserInfo()
         } catch (e) {
           console.log(e, 'authorization')
-          this.showPopup(e)
+          // this.showPopup(e)
         }
       },
       init () {
