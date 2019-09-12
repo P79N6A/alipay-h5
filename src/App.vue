@@ -50,16 +50,17 @@
           this.model.idCard = data.certificateNum
           this.model.phoneNumber = data.createdStamp
         } catch (e) {
-          this.showPopup('myPopup', JSON.stringify(e))
+          console.log(e, 'getUserInfo')
+          // this.showPopup('myPopup', JSON.stringify(e))
         }
       },
       async authorization () {
         try {
           this.authData.authCode = getQueryString('auth_code')
           this.authData.state = getQueryString('state')
-          if (!this.authData.authCode && this.payEnv === 'alipay') {
+          if (!this.authData.authCode) {
             //window.location.href 'http://222.212.141.34:8085/ws_html/home'
-            location.replace(`https://openauth.alipay.com/oauth2/publicAppAuthorize.htm?app_id=2019082366406532&scope=auth_user&state=${this.user.customerId}&redirect_uri=${encodeURI(window.location.href)}`)
+            location.replace(`https://openauth.alipay.com/oauth2/publicAppAuthorize.htm?app_id=2019082366406532&scope=auth_user&state=${this.user.customerId}&redirect_uri=http://222.212.141.34:8085/ws_html/home`)
             return
           }
           if (this.authData.authCode && this.authData.state) {
@@ -72,7 +73,8 @@
           }
           this.getUserInfo()
         } catch (e) {
-          this.showPopup('myPopup', JSON.stringify(e))
+          console.log(e, 'authorization')
+          // this.showPopup('myPopup', JSON.stringify(e))
         }
       },
       init () {
