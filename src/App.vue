@@ -75,7 +75,7 @@
       },
       init () {
         this.user.customerId = getQueryString('customerId') || '170828129252'
-        this.user.token = getQueryString('token') || 'CFDE472E32C543F29B4CBFFB7ACD9E05'
+        this.user.token = getQueryString('token') || '06D56C1E28D845ECB42FBCFD67858524'
         this.user.alipayVersion  = Ali.alipayVersion
         localStorage.setItem('token', this.user.token)
         // 判断微信还是支付宝

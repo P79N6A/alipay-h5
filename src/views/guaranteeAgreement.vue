@@ -2,7 +2,7 @@
     <cubePage title="申请评估协议" type="drawer">
         <div slot="content">
             <div class="view-wrapper">
-                <iframe class="my-iframe" src="/serviceagreement/fwxy.html" frameborder="0"></iframe>
+                <iframe class="my-iframe" src="/serviceagreement/qcfqdb.html" frameborder="0"></iframe>
             </div>
         </div>
     </cubePage>

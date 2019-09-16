@@ -9,7 +9,7 @@
                 <cube-form-item v-for="(item, index) in fields" :key="index" :field="item"></cube-form-item>
                 <model :model="model" :invalid="invalid"></model>
                 <cube-checkbox v-model="model.agree" class="protocol-checkbox">
-                    本人已阅读并同意 <span class="link-blue" @click.stop="openProtocol">服务协议</span>、<span class="link-blue" @click.stop="openProtocol">汽车分期业务综合授信(担保)协议</span>
+                    本人已阅读并同意 <span class="link-blue" @click.stop="openProtocol">服务协议</span>、<span class="link-blue" @click.stop="openGuaranteeAgreement">汽车分期业务综合授信(担保)协议</span>
                 </cube-checkbox>
             </cube-form-group>
             <cube-form-group>
@@ -106,6 +106,9 @@
       },
       openProtocol () {
         this.$router.push('/evaluationAgreement')
+      },
+      openGuaranteeAgreement () {
+        this.$router.push('/guaranteeAgreement')
       }
     }
   };

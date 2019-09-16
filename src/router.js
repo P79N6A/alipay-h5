@@ -56,7 +56,18 @@ export default new Router({
       // which is lazy-loaded when the route is visited.
       component: () => import(/* webpackChunkName: "evaluationAgreement" */ './views/evaluationAgreement.vue'),
       meta:{
-        title: '申请评估协议'
+        title: '服务协议'
+      }
+    },
+    {
+      path: '/guaranteeAgreement',
+      name: 'guaranteeAgreement',
+      // route level code-splitting
+      // this generates a separate chunk (about.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import(/* webpackChunkName: "guaranteeAgreement" */ './views/guaranteeAgreement.vue'),
+      meta:{
+        title: '汽车分期业务综合授信(担保)协议'
       }
     }
   ]
