@@ -35,12 +35,15 @@
           '/serviceagreement/fwxy/fwxy_7.jpg',
         ],
         options: {
-          scrollbar: {fade: this.true},
+          scrollbar: {fade: true},
           startY: 0
         }
       }
     },
     mounted () {
+      setTimeout(() => {
+        this.$refs.scroll.refresh()
+      }, 800)
     }
   };
 </script>
