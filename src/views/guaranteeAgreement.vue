@@ -2,14 +2,14 @@
     <cubePage title="汽车分期业务综合授信(担保)协议" type="drawer">
         <div slot="content">
             <div class="view-wrapper">
-                <cube-scroll
-                        ref="scroll"
-                        :data="items"
-                        :options="options">
-                    <div class="image-list">
-                        <img v-for="(item, index) in items" :src="item" :key="index" alt="">
-                    </div>
-                </cube-scroll>
+                <div style="width: 100%; height: 100vh">
+                    <cube-scroll
+                            ref="scroll"
+                            :data="items"
+                            :options="options">
+                        <img class="img-item" v-for="(item, index) in items" :src="item" :key="index" alt="">
+                    </cube-scroll>
+                </div>
             </div>
         </div>
     </cubePage>
@@ -46,21 +46,11 @@
 
 <style lang="stylus">
 
-    .my-iframe {
-        width 100%
-        height 100vh
-    }
-
-    .image-list {
-        height: 100%;
-        overflow-y: auto;
-
-        img {
-            width 100%;
-            margin 0;
-            padding 0;
-            display block
-        }
+    .img-item {
+        width 100%;
+        margin 0;
+        padding 0;
+        display block
     }
 </style>
 
