@@ -62,12 +62,17 @@ export default new Router({
     {
       path: '/guaranteeAgreement',
       name: 'guaranteeAgreement',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import(/* webpackChunkName: "guaranteeAgreement" */ './views/guaranteeAgreement.vue'),
       meta:{
         title: '汽车分期业务综合授信(担保)协议'
+      }
+    },
+    {
+      path: '/auditResult',
+      name: 'auditResult',
+      component: () => import(/* webpackChunkName: "auditResult" */ './views/auditResult.vue'),
+      meta:{
+        title: '评估结果'
       }
     }
   ]

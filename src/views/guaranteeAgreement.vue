@@ -1,8 +1,15 @@
 <template>
-    <cubePage title="申请评估协议" type="drawer">
+    <cubePage title="汽车分期业务综合授信(担保)协议" type="drawer">
         <div slot="content">
             <div class="view-wrapper">
-                <iframe class="my-iframe" src="/serviceagreement/qcfqdb.html" frameborder="0"></iframe>
+                <cube-scroll
+                        ref="scroll"
+                        :data="items"
+                        :options="options">
+                    <div class="image-list">
+                        <img v-for="(item, index) in items" :src="item" :key="index" alt="">
+                    </div>
+                </cube-scroll>
             </div>
         </div>
     </cubePage>
@@ -10,9 +17,27 @@
 
 <script>
   import cubePage from "@/components/cube-page";
+
   export default {
     components: {
       cubePage
+    },
+    data () {
+      return {
+        items: [
+          '/serviceagreement/dbxy/dbxy_0.jpg',
+          '/serviceagreement/dbxy/dbxy_1.jpg',
+          '/serviceagreement/dbxy/dbxy_2.jpg',
+          '/serviceagreement/dbxy/dbxy_3.jpg',
+          '/serviceagreement/dbxy/dbxy_4.jpg',
+          '/serviceagreement/dbxy/dbxy_5.jpg',
+          '/serviceagreement/dbxy/dbxy_6.jpg',
+        ],
+        options: {
+          scrollbar: {fade: this.true},
+          startY: 0
+        }
+      }
     },
     mounted () {
     }
@@ -24,6 +49,18 @@
     .my-iframe {
         width 100%
         height 100vh
+    }
+
+    .image-list {
+        height: 100%;
+        overflow-y: auto;
+
+        img {
+            width 100%;
+            margin 0;
+            padding 0;
+            display block
+        }
     }
 </style>
 
