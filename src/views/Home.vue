@@ -110,6 +110,7 @@
           this.user.vid = data.vid
           this.verifyIdentity()
         } catch (e) {
+          console.log(e)
           this.showPopup('getVid Error')
         }
       },

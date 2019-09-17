@@ -31,7 +31,7 @@
         if(Ali.alipayVersion) {
           this.user.alipayVersion = Ali.alipayVersion.split('.').slice(0, 3).join('.')
         }
-        // this.user.alipayVersion = '10.0'
+        // this.user.alipayVersion = '10.1.17'
         localStorage.setItem('token', this.user.token)
         if(!this.user.customerId || !this.user.token) {
           this.$router.replace({
