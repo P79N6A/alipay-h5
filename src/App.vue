@@ -7,15 +7,22 @@
 <script type="text/ecmascript-6">
   import CubeView from './components/cube-view.vue'
   import { getQueryString } from '@/utils'
+  import { authorization, getUserInfo } from '@/api'
 
   export default {
     components: {
       CubeView
     },
     computed: {
+      model () {
+        return this.$store.state.model
+      },
       user () {
         return this.$store.state.user
-      }
+      },
+      authData () {
+        return this.$store.state.authData
+      },
     },
     methods: {
       init () {
@@ -27,8 +34,69 @@
           this.$router.replace({
             name: 'notFound'
           })
+          return
         }
-      }
+        this.getPlatform()
+      },
+      showPopup (e = '请求错误') {
+        const toast = this.$createToast({
+          txt: e,
+          type: 'warn',
+          time: 2000,
+        })
+        toast.show()
+      },
+      // 获取用户信息
+      async getUserInfo () {
+        try {
+          const {data} = await getUserInfo({
+            id: this.user.customerId
+          })
+          this.model.name = data.customerName
+          this.model.idCard = data.certificateNum
+          this.model.phoneNumber = data.createdStamp
+        } catch (e) {
+          console.log(e)
+          this.showPopup(e)
+        }
+      },
+      // 授权
+      async authorization () {
+        try {
+          this.authData.authCode = getQueryString('auth_code')
+          this.authData.state = getQueryString('state')
+          if (!this.authData.authCode && this.payEnv === 'alipay') {
+            location.replace(`https://openauth.alipay.com/oauth2/publicAppAuthorize.htm?app_id=2019082366406532&scope=auth_user&state=customer_${this.user.customerId}&redirect_uri=${window.location.href}`)
+            return
+          }
+          if (this.authData.authCode && this.authData.state) {
+            const params = {
+              auth_code: this.authData.authCode,
+              state: this.authData.state
+            }
+            const {data} = await authorization(params)
+            this.user.aliPayUserId = data.aliPayUserId
+          }
+          this.getUserInfo()
+        } catch (e) {
+          this.showPopup(e)
+        }
+      },
+      // 初始化
+      getPlatform () {
+        const userAgent = window.navigator.userAgent
+        // 判断微信还是支付宝
+        if (/MicroMessenger/.test(userAgent)) {
+          // 微信
+          this.payEnv = 'weixin';
+        } else if (/AlipayClient/.test(userAgent)) {
+          // 支付宝
+          this.payEnv = 'alipay';
+        } else {
+          this.payEnv = 'others';
+        }
+        this.authorization()
+      },
     },
     created () {
       this.init()

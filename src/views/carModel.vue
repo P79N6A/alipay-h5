@@ -53,14 +53,12 @@
         }
       },
       init (data) {
-        console.log(data)
         const arr = data.map(item => {
           return {
             ...item,
             name: item.fullname
           }
         })
-        console.log(arr)
         this.modelList = [{
           name: '所有车型',
           items: arr

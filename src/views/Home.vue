@@ -22,8 +22,8 @@
 
 <script>
   import model from './model'
-  import { getQueryString, ready } from '@/utils'
-  import { authorization, getUserInfo, getVid } from '@/api'
+  import { ready } from '@/utils'
+  import { getVid } from '@/api'
 
   export default {
     name: "home",
@@ -33,9 +33,6 @@
     computed: {
       model () {
         return this.$store.state.model
-      },
-      authData () {
-        return this.$store.state.authData
       },
       user () {
         return this.$store.state.user
@@ -138,21 +135,6 @@
       openGuaranteeAgreement () {
         this.$router.push('/guaranteeAgreement')
       },
-      // 初始化
-      init () {
-        const userAgent = window.navigator.userAgent
-        // 判断微信还是支付宝
-        if (/MicroMessenger/.test(userAgent)) {
-          // 微信
-          this.payEnv = 'weixin';
-        } else if (/AlipayClient/.test(userAgent)) {
-          // 支付宝
-          this.payEnv = 'alipay';
-        } else {
-          this.payEnv = 'others';
-        }
-        this.authorization()
-      },
       showPopup (e = '请求错误') {
         const toast = this.$createToast({
           txt: e,
@@ -160,45 +142,10 @@
           time: 2000,
         })
         toast.show()
-      },
-      // 获取用户信息
-      async getUserInfo () {
-        try {
-          const {data} = await getUserInfo({
-            id: this.user.customerId
-          })
-          this.model.name = data.customerName
-          this.model.idCard = data.certificateNum
-          this.model.phoneNumber = data.createdStamp
-        } catch (e) {
-          this.showPopup(e)
-        }
-      },
-      // 授权
-      async authorization () {
-        try {
-          this.authData.authCode = getQueryString('auth_code')
-          this.authData.state = getQueryString('state')
-          if (!this.authData.authCode && this.payEnv === 'alipay') {
-            location.replace(`https://openauth.alipay.com/oauth2/publicAppAuthorize.htm?app_id=2019082366406532&scope=auth_user&state=customer_${this.user.customerId}&redirect_uri=${window.location.href}`)
-            return
-          }
-          if (this.authData.authCode && this.authData.state) {
-            const params = {
-              auth_code: this.authData.authCode,
-              state: this.authData.state
-            }
-            const {data} = await authorization(params)
-            this.user.aliPayUserId = data.aliPayUserId
-          }
-          this.getUserInfo()
-        } catch (e) {
-          this.showPopup(e)
-        }
       }
     },
     mounted () {
-      this.init()
+      // this.init()
     }
   };
 </script>
