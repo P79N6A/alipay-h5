@@ -118,8 +118,12 @@
        * 验证vid
        */
       verifyIdentity () {
-        if (Ali.call) {
-          Ali.call('verifyIdentity', {verifyId: this.user.vid, isNeedFP: 'true',}, function (result) {
+        // if (Ali.call) {
+        //   Ali.call('verifyIdentity', {verifyId: this.user.vid, isNeedFP: 'true',}, function (result) {
+        //     this.showPopup(result.code)
+        //   })
+        if (ap.call) {
+          ap.call('verifyIdentity', {verifyId: this.user.vid, isNeedFP: 'true',}, function (result) {
             this.showPopup(result.code)
           })
         }
