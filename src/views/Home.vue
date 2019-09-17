@@ -125,6 +125,7 @@
       },
       // 表单验证
       validateHandler (result) {
+        console.log(result)
         this.validity = result.validity;
         this.valid = result.valid;
       },

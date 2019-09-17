@@ -4,7 +4,7 @@ class AjaxRequest {
   constructor () {
     // this.baseURL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : '/';
     // this.baseURL = '/';
-    this.timeout = 2000;
+    this.timeout = 5000;
   }
 
   request (config) { // 用户请求设置的方法
