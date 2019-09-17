@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
+import NotFound from './views/404.vue'
 
 Vue.use(Router)
 // console.log(process.env.NODE_ENV === 'production' ? '/ws_html/' : '/')
@@ -73,6 +74,15 @@ export default new Router({
       component: () => import(/* webpackChunkName: "auditResult" */ './views/auditResult.vue'),
       meta:{
         title: '评估结果'
+      }
+    },
+    {
+      // 会匹配所有路径
+      path: '*',
+      name: 'notFound',
+      component: NotFound,
+      meta:{
+        title: '404'
       }
     }
   ]

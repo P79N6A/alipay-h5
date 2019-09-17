@@ -6,94 +6,34 @@
 
 <script type="text/ecmascript-6">
   import CubeView from './components/cube-view.vue'
-  import { authorization, getUserInfo } from '@/api'
-  import { getQueryString, ready } from '@/utils'
+  import { getQueryString } from '@/utils'
 
   export default {
-    data () {
-      return {
-      }
-    },
-    computed: {
-      authData () {
-        return this.$store.state.authData
-      },
-      user () {
-        return this.$store.state.user
-      },
-      model () {
-        return this.$store.state.model
-      }
-    },
     components: {
       CubeView
     },
-    methods: {
-      showPopup (e = '请求错误') {
-        const toast = this.$createToast({
-          txt: e,
-          type: 'warn',
-          time: 2000,
-        })
-        toast.show()
-      },
-      async getUserInfo () {
-        try {
-          const {data} = await getUserInfo({
-            id: this.user.customerId
-          })
-          this.model.name = data.customerName
-          this.model.idCard = data.certificateNum
-          this.model.phoneNumber = data.createdStamp
-        } catch (e) {
-          console.log(e, 'getUserInfo')
-          this.showPopup(e)
-        }
-      },
-      async authorization () {
-        try {
-          this.authData.authCode = getQueryString('auth_code')
-          this.authData.state = getQueryString('state')
-          if (!this.authData.authCode && this.payEnv === 'alipay') {
-            //window.location.href 'http://222.212.141.34:8085/ws_html/home'
-            location.replace(`https://openauth.alipay.com/oauth2/publicAppAuthorize.htm?app_id=2019082366406532&scope=auth_user&state=customer_${this.user.customerId}&redirect_uri=${window.location.href}`)
-            return
-          }
-          if (this.authData.authCode && this.authData.state) {
-            const params = {
-              auth_code: this.authData.authCode,
-              state: this.authData.state
-            }
-            const {data} = await authorization(params)
-            this.user.aliPayUserId = data.aliPayUserId
-          }
-          this.getUserInfo()
-        } catch (e) {
-          console.log(e, 'authorization')
-          this.showPopup(e)
-        }
-      },
-      init () {
-        this.user.customerId = getQueryString('customerId') || '170828129252'
-        this.user.token = getQueryString('token') || '06D56C1E28D845ECB42FBCFD67858524'
-        this.user.alipayVersion  = Ali.alipayVersion
-        localStorage.setItem('token', this.user.token)
-        // 判断微信还是支付宝
-        if (/MicroMessenger/.test(window.navigator.userAgent)) {
-          // 微信
-          this.payEnv = 'weixin';
-        } else if (/AlipayClient/.test(window.navigator.userAgent)) {
-          // 支付宝
-          this.payEnv = 'alipay';
-        } else {
-          this.payEnv = 'others';
-        }
-        this.authorization()
+    computed: {
+      user () {
+        return this.$store.state.user
       }
     },
-    mounted () {
+    methods: {
+      init () {
+        this.user.customerId = getQueryString('customerId') || '170828129252'
+        this.user.token = getQueryString('token') || '6A966FF90AB44233A1D18F878EAA99B2'
+        this.user.alipayVersion = Ali.alipayVersion
+        localStorage.setItem('token', this.user.token)
+        if(!this.user.customerId || !this.user.token) {
+          this.$router.replace({
+            name: 'notFound'
+          })
+        }
+      }
+    },
+    created () {
       this.init()
     }
+
   }
 </script>
 

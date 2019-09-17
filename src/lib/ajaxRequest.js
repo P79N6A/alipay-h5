@@ -1,13 +1,13 @@
 import axios from 'axios';
 
 class AjaxRequest {
-  constructor() {
+  constructor () {
     // this.baseURL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : '/';
     // this.baseURL = '/';
     this.timeout = 2000;
   }
 
-  request(config) { // 用户请求设置的方法
+  request (config) { // 用户请求设置的方法
     const instance = axios.create({
       baseURL: this.baseURL,
       timeout: this.timeout,
@@ -18,7 +18,12 @@ class AjaxRequest {
       return config;
     }, err => Promise.reject(err));
     // 设置响应拦截器
-    instance.interceptors.response.use(res => res.data, err => Promise.reject(err));
+    instance.interceptors.response.use(res => {
+      if (res.data.code === 500) {
+        return Promise.reject(res.data.msg)
+      }
+      return res.data
+    }, err => Promise.reject(err));
 
     return instance(config);
   }

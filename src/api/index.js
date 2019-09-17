@@ -28,8 +28,20 @@ export const authorization = params => axios.request({
   params
 })
 
+// 获取客户信息
 export  const getUserInfo = params => axios.request({
   method: 'get',
   url: '/customer/cs/cuPersonalInfo/getInfo',
+  params
+})
+
+/**
+ * 获取验证id
+ * @param params
+ * @return {AxiosPromise}
+ */
+export  const getVid = params => axios.request({
+  method: 'get',
+  url: '/order/ws/vid',
   params
 })

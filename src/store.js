@@ -20,7 +20,8 @@ export default new Vuex.Store({
     user: {
       customerId: '',
       aliPayUserId: '',
-      alipayVersion: ''
+      alipayVersion: '',
+      vid: ''
     }
   },
   mutations: {

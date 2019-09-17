@@ -23,6 +23,7 @@
 <script>
   import model from './model'
   import { getQueryString, ready } from '@/utils'
+  import { authorization, getUserInfo, getVid } from '@/api'
 
   export default {
     name: "home",
@@ -32,6 +33,12 @@
     computed: {
       model () {
         return this.$store.state.model
+      },
+      authData () {
+        return this.$store.state.authData
+      },
+      user () {
+        return this.$store.state.user
       }
     },
     data () {
@@ -83,33 +90,115 @@
       };
     },
     methods: {
+      // 表单提交
       submitHandler () {
         this.model.vehicleModel ? this.invalid = false : this.invalid = true
         this.$refs.formData.validate();
         if (this.valid && this.model.vehicleModel) {
-          ready(function () {
-            AlipayJSBridge.call('verifyIdentity', {verifyId: 'xxx', isNeedFP: 'true',}, function (result) {
-
-              // AlipayJSBridge.call('toast', {
-              //   content: result.code
-              // });
-              // AlipayJSBridge.call('toast', {
-              //   content: result.verifyId
-              // });
-            });
-          });
+          this.getVid()
         }
       },
+      /**
+       * 获取Vid
+       * @return {Promise<void>}
+       */
+      async getVid () {
+        try {
+          const params = {
+            customerId: this.user.customerId,
+            customerName: this.model.name,
+            alipayVersion: this.user.alipayVersion
+          }
+          const {data} = await getVid(params)
+          this.user.vid = data.vid
+          this.verifyIdentity()
+        } catch (e) {
+          this.showPopup(e)
+        }
+      },
+      /**
+       * 验证vid
+       */
+      verifyIdentity () {
+        ready(function () {
+          AlipayJSBridge.call('verifyIdentity', {verifyId: this.user.vid, isNeedFP: 'true',}, function (result) {
+            console.log(result)
+          });
+        });
+      },
+      // 表单验证
       validateHandler (result) {
         this.validity = result.validity;
         this.valid = result.valid;
       },
+      // 查看协议
       openProtocol () {
         this.$router.push('/evaluationAgreement')
       },
       openGuaranteeAgreement () {
         this.$router.push('/guaranteeAgreement')
+      },
+      // 初始化
+      init () {
+        const userAgent = window.navigator.userAgent
+        // 判断微信还是支付宝
+        if (/MicroMessenger/.test(userAgent)) {
+          // 微信
+          this.payEnv = 'weixin';
+        } else if (/AlipayClient/.test(userAgent)) {
+          // 支付宝
+          this.payEnv = 'alipay';
+        } else {
+          this.payEnv = 'others';
+        }
+        this.authorization()
+      },
+      showPopup (e = '请求错误') {
+        const toast = this.$createToast({
+          txt: e,
+          type: 'warn',
+          time: 2000,
+        })
+        toast.show()
+      },
+      // 获取用户信息
+      async getUserInfo () {
+        try {
+          const {data} = await getUserInfo({
+            id: this.user.customerId
+          })
+          this.model.name = data.customerName
+          this.model.idCard = data.certificateNum
+          this.model.phoneNumber = data.createdStamp
+        } catch (e) {
+          this.showPopup(e)
+        }
+      },
+      // 授权
+      async authorization () {
+        try {
+          this.authData.authCode = getQueryString('auth_code')
+          this.authData.state = getQueryString('state')
+          if (!this.authData.authCode && this.payEnv === 'alipay') {
+            location.replace(`https://openauth.alipay.com/oauth2/publicAppAuthorize.htm?app_id=2019082366406532&scope=auth_user&state=customer_${this.user.customerId}&redirect_uri=${window.location.href}`)
+            return
+          }
+          if (this.authData.authCode && this.authData.state) {
+            const params = {
+              auth_code: this.authData.authCode,
+              state: this.authData.state
+            }
+            const {data} = await authorization(params)
+            this.user.aliPayUserId = data.aliPayUserId
+          }
+          this.getUserInfo()
+        } catch (e) {
+          this.showPopup(e)
+        }
       }
+    },
+    mounted () {
+      this.init()
     }
   };
 </script>
