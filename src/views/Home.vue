@@ -117,6 +117,7 @@
        * 验证vid
        */
       verifyIdentity () {
+        // console.log(this.user.vid)
         ready(function () {
           AlipayJSBridge.call('verifyIdentity', {verifyId: this.user.vid, isNeedFP: 'true',}, function (result) {
             console.log(result)
@@ -125,8 +126,7 @@
       },
       // 表单验证
       validateHandler (result) {
-        console.log(result)
-        this.validity = result.validity;
+        // this.validity = result.validity;
         this.valid = result.valid;
       },
       // 查看协议

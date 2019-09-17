@@ -29,8 +29,9 @@
         this.user.customerId = getQueryString('customerId') || '170828129252'
         this.user.token = getQueryString('token') || '6A966FF90AB44233A1D18F878EAA99B2'
         if(Ali.alipayVersion) {
-          this.user.alipayVersion = Ali.alipayVersion.slice(0, 3)
+          this.user.alipayVersion = Ali.alipayVersion.slice(0, 3).join('.')
         }
+        // this.user.alipayVersion = '10.0'
         localStorage.setItem('token', this.user.token)
         if(!this.user.customerId || !this.user.token) {
           this.$router.replace({
