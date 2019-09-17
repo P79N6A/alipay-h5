@@ -22,7 +22,7 @@
 
 <script>
   import model from './model'
-  import { ready } from '@/utils'
+  // import { ready } from '@/utils'
   import { getVid } from '@/api'
 
   export default {
@@ -118,13 +118,18 @@
        * 验证vid
        */
       verifyIdentity () {
-        ready(function () {
-          AlipayJSBridge.call('verifyIdentity', {verifyId: this.user.vid, isNeedFP: 'true',}, function (result) {
-            // console.log(result.code);
-            // console.log(result.verifyId);
+        if (Ali.call) {
+          Ali.call('verifyIdentity', {verifyId: this.user.vid, isNeedFP: 'true',}, function (result) {
             this.showPopup(result.code)
-          });
-        });
+          })
+        }
+        // ready(function () {
+        // ap.call('verifyIdentity', {verifyId: this.user.vid, isNeedFP: 'true',}, function (result) {
+        // console.log(result.code);
+        // console.log(result.verifyId);
+        //   this.showPopup(result.code)
+        // });
+        // });
       },
       // 表单验证
       validateHandler (result) {
