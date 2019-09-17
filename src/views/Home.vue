@@ -89,8 +89,8 @@
     methods: {
       // 表单提交
       submitHandler () {
+        console.log(1)
         this.model.vehicleModel ? this.invalid = false : this.invalid = true
-        this.$refs.formData.validate();
         if (this.valid && this.model.vehicleModel) {
           this.getVid()
         }
@@ -125,11 +125,6 @@
         Ali.call('verifyIdentity', {verifyId: this.user.vid, isNeedFP: 'true',}, function (result) {
           this.showPopup(result.code)
         })
-        // ap.scan({
-        //   type: 'bar'
-        // }, function(res){
-        //   ap.alert(res.code);
-        // });
       },
       // 表单验证
       validateHandler (result) {
@@ -153,7 +148,7 @@
       }
     },
     mounted () {
-      // this.init()
+      this.$refs.formData.validate();
     }
   };
 </script>
