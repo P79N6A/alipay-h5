@@ -122,16 +122,14 @@
         //   Ali.call('verifyIdentity', {verifyId: this.user.vid, isNeedFP: 'true',}, function (result) {
         //     this.showPopup(result.code)
         //   })
-        // if (ap.call) {
-        //   ap.call('verifyIdentity', {verifyId: this.user.vid, isNeedFP: 'true',}, function (result) {
-        //     this.showPopup(result.code)
-        //   })
-        // }
-        ap.scan({
-          type: 'bar'
-        }, function(res){
-          ap.alert(res.code);
-        });
+        Ali.call('verifyIdentity', {verifyId: this.user.vid, isNeedFP: 'true',}, function (result) {
+          this.showPopup(result.code)
+        })
+        // ap.scan({
+        //   type: 'bar'
+        // }, function(res){
+        //   ap.alert(res.code);
+        // });
       },
       // 表单验证
       validateHandler (result) {
