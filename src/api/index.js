@@ -41,7 +41,7 @@ export  const getUserInfo = params => axios.request({
  * @return {AxiosPromise}
  */
 export  const getVid = params => axios.request({
-  method: 'get',
+  method: 'post',
   url: '/order/ws/vid',
-  params
+  data: params
 })
