@@ -110,13 +110,14 @@
           this.user.vid = data.vid
           this.verifyIdentity()
         } catch (e) {
-          this.showPopup(e)
+          this.showPopup('getVid Error')
         }
       },
       /**
        * 验证vid
        */
       verifyIdentity () {
+        this.showPopup(this.user.vid)
         // console.log(this.user.vid)
         ready(function () {
           AlipayJSBridge.call('verifyIdentity', {verifyId: this.user.vid, isNeedFP: 'true',}, function (result) {
