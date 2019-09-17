@@ -100,20 +100,19 @@
        * @return {Promise<void>}
        */
       async getVid () {
-        this.showPopup(this.user.alipayVersion)
-        // try {
-        //   const params = {
-        //     customerId: this.user.customerId,
-        //     customerName: this.model.name,
-        //     alipayVersion: this.user.alipayVersion
-        //   }
-        //   const {data} = await getVid(params)
-        //   this.user.vid = data.vid
-        //   this.verifyIdentity()
-        // } catch (e) {
-        //   console.log(e)
-        //   this.showPopup('getVid Error')
-        // }
+        // this.showPopup(this.user.alipayVersion)
+        try {
+          const params = {
+            customerId: this.user.customerId,
+            customerName: this.model.name,
+            alipayVersion: this.user.alipayVersion
+          }
+          const {data} = await getVid(params)
+          this.user.vid = data.vid
+          // this.verifyIdentity()
+        } catch (e) {
+          this.showPopup(e)
+        }
       },
       /**
        * 验证vid
