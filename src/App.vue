@@ -27,11 +27,10 @@
     methods: {
       init () {
         this.user.customerId = getQueryString('customerId') || '170828129252'
-        this.user.token = getQueryString('token') || '6A966FF90AB44233A1D18F878EAA99B2'
+        this.user.token = getQueryString('token') || 'B258146BB4BC4523BE41C4F41FBFC396'
         if(Ali.alipayVersion) {
           this.user.alipayVersion = Ali.alipayVersion.split('.').slice(0, 3).join('.')
         }
-        // this.user.alipayVersion = '10.1.17'
         localStorage.setItem('token', this.user.token)
         if(!this.user.customerId || !this.user.token) {
           this.$router.replace({
@@ -69,7 +68,7 @@
           this.authData.authCode = getQueryString('auth_code')
           this.authData.state = getQueryString('state')
           if (!this.authData.authCode && this.payEnv === 'alipay') {
-            location.replace(`https://openauth.alipay.com/oauth2/publicAppAuthorize.htm?app_id=2019082366406532&scope=auth_user&state=customer_${this.user.customerId}&redirect_uri=${window.location.href}`)
+            location.replace(`https://openauth.alipay.com/oauth2/publicAppAuthorize.htm?app_id=2019082366406532&scope=auth_user&state=customer_${this.user.customerId}&redirect_uri=${encodeURI(window.location.href)}`)
             return
           }
           if (this.authData.authCode && this.authData.state) {
@@ -96,6 +95,7 @@
           // 支付宝
           this.payEnv = 'alipay';
         } else {
+          this.user.alipayVersion = '10.1.17'
           this.payEnv = 'others';
         }
         this.authorization()

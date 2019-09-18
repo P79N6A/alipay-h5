@@ -29,7 +29,7 @@ export const authorization = params => axios.request({
 })
 
 // 获取客户信息
-export  const getUserInfo = params => axios.request({
+export const getUserInfo = params => axios.request({
   method: 'get',
   url: '/customer/cs/cuPersonalInfo/getInfo',
   params
@@ -40,8 +40,19 @@ export  const getUserInfo = params => axios.request({
  * @param params
  * @return {AxiosPromise}
  */
-export  const getVid = params => axios.request({
+export const getVid = params => axios.request({
   method: 'post',
   url: '/order/ws/vid',
+  data: params
+})
+
+/**
+ * 提交申请
+ * @param params
+ * @return {AxiosPromise}
+ */
+export const submit = params => axios.request({
+  method: 'post',
+  url: '/order/ws/create',
   data: params
 })

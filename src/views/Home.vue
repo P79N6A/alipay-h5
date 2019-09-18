@@ -23,7 +23,7 @@
 <script>
   import model from './model'
   // import { ready } from '@/utils'
-  import { getVid } from '@/api'
+  import { getVid, submit } from '@/api'
 
   export default {
     name: "home",
@@ -89,7 +89,6 @@
     methods: {
       // 表单提交
       submitHandler () {
-        console.log(1)
         this.model.vehicleModel ? this.invalid = false : this.invalid = true
         if (this.valid && this.model.vehicleModel) {
           this.getVid()
@@ -109,7 +108,12 @@
           }
           const {data} = await getVid(params)
           this.user.vid = data.vid
-          this.verifyIdentity()
+          if(/AlipayClient/.test(window.navigator.userAgent)) {
+            //this.verifyIdentity()
+            this.submit()
+          } else {
+            this.submit()
+          }
         } catch (e) {
           this.showPopup(e)
         }
@@ -118,13 +122,61 @@
        * 验证vid
        */
       verifyIdentity () {
-        // if (Ali.call) {
-        //   Ali.call('verifyIdentity', {verifyId: this.user.vid, isNeedFP: 'true',}, function (result) {
-        //     this.showPopup(result.code)
-        //   })
         Ali.call('verifyIdentity', {verifyId: this.user.vid, isNeedFP: 'true',}, function (result) {
-          this.showPopup(result.code)
+          // this.showPopup(result.code)
+          if(result.code == 1000) {
+            this.submit()
+          }
         })
+      },
+      // 提交申请评估
+      async submit () {
+        try {
+          const params = {
+            customerId: this.user.customerId,
+            customerName: this.model.name,
+            alipayVersion: this.user.alipayVersion,
+            vid: this.user.vid,
+          }
+          const {data} = await submit(params)
+          if(data.needAuth) {
+            this.showBtn()
+          }
+        }catch (e) {
+          this.showPopup(e)
+        }
+      },
+      showBtn() {
+        this.$createDialog({
+          type: 'confirm',
+          icon: 'cubeic-alert',
+          title: 'A类认证',
+          content: '系统检测到您还未进行A类认证，请你在24小时之内完成A类认证，方可继续进行评估申请',
+          confirmBtn: {
+            text: '确定',
+            active: true,
+            disabled: false,
+            href: 'javascript:;'
+          },
+          cancelBtn: {
+            text: '取消',
+            active: false,
+            disabled: false,
+            href: 'javascript:;'
+          },
+          onConfirm: () => {
+            //http://custweb.stable.alipay.net/certify/personal/car_fin // 测试环境
+            //https://custweb.alipay.com/certify/personal/car_fin // 生产环境
+            location.replace(`https://custweb.alipay.com/certify/personal/car_fin?continue=${encodeURI(window.location.href)}&exit=false`)
+          },
+          onCancel: () => {
+            this.$createToast({
+              type: 'warn',
+              time: 1000,
+              txt: '取消'
+            }).show()
+          }
+        }).show()
       },
       // 表单验证
       validateHandler (result) {
